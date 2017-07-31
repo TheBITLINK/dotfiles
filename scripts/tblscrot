@@ -1,0 +1,55 @@
+#!/usr/bin/env python2
+from subprocess import call
+from shutil import copyfile
+from os.path import expanduser
+import string
+import pyperclip
+import time
+import random
+import math
+import notify2
+
+notify2.init("tblscrot")
+
+# Destination Server
+dst_server = "me@thebitlink.com:/var/www/ss"
+# Base URL (to copy to the clipboard)
+base_url = "https://i.tblnk.me/"
+
+# Unix Timestamp as the name
+# name = str(math.floor(time.time()))
+# Random alphanumeric name
+name = ''.join(random.choice(string.ascii_uppercase + string.ascii_lowercase + string.digits) for _ in range(6))
+
+# Destination
+dst = expanduser("~/Pictures/Screenshots/{0}.png".format(name))
+
+# Take a screenshot with gnome-screenshot
+call(["gnome-screenshot", "-af", dst])
+# Take a screenshot with spectacle
+# call(["spectacle", "-rbo", dst])
+# Take a screenshot with scrot
+# call(["scrot", "-s", "--exec", "mv $f " + dst])
+
+# Show notification
+n = notify2.Notification("Uploading screenshot...", "", dst)
+n.set_category("transfer")
+n.show()
+# Upload to server
+try:
+  exit_code = call(["scp", dst, dst_server])
+  if not exit_code:
+    # Update notification
+    n.update("Screenshot uploaded!", base_url + name + '.png')
+    n.set_category("transfer.complete")
+    # Copy link to the clipboard
+    pyperclip.copy(base_url + name + ".png")
+  else:
+    n.update("Error uploading")
+    n.set_category("transfer.failed")
+except OSError:
+  # Update notification
+  n.update("Error uploading")
+  n.set_category("transfer.failed")
+  pass
+n.show()

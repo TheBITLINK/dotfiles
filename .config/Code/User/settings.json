@@ -1,0 +1,18 @@
+// Place your settings in this file to overwrite the default settings
+{
+    "editor.fontFamily": "Fira Code",
+    "editor.fontLigatures": true,
+    "editor.tabSize": 2,
+    "window.openFilesInNewWindow": "off",
+    "git.confirmSync": false,
+    "window.zoomLevel": 0,
+    "workbench.activityBar.visible": true,
+    "window.menuBarVisibility": "toggle",
+    "workbench.iconTheme": "vs-nomo-dark",
+    "editor.minimap.enabled": true,
+    "editor.minimap.renderCharacters": false,
+    "editor.dragAndDrop": true,
+    "standard.enable": true,
+    "workbench.colorTheme": "Material Theme",
+    "git.enableSmartCommit": true
+  }
