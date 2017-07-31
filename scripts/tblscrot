@@ -1,7 +1,7 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python
 from subprocess import call
 from shutil import copyfile
-from os.path import expanduser
+from os.path import expanduser, isfile
 import string
 import pyperclip
 import time
@@ -31,25 +31,27 @@ call(["gnome-screenshot", "-af", dst])
 # Take a screenshot with scrot
 # call(["scrot", "-s", "--exec", "mv $f " + dst])
 
-# Show notification
-n = notify2.Notification("Uploading screenshot...", "", dst)
-n.set_category("transfer")
-n.show()
-# Upload to server
-try:
-  exit_code = call(["scp", dst, dst_server])
-  if not exit_code:
+# Check if file exists
+if isfile(dst):
+  # Show notification
+  n = notify2.Notification("Uploading screenshot...", dst, dst)
+  n.set_category("transfer")
+  n.show()
+  # Upload to server
+  try:
+    exit_code = call(["scp", dst, dst_server])
+    if not exit_code:
+      # Update notification
+      n.update("Screenshot uploaded!", base_url + name + '.png')
+      n.set_category("transfer.complete")
+      # Copy link to the clipboard
+      pyperclip.copy(base_url + name + ".png")
+    else:
+      n.update("Error uploading")
+      n.set_category("transfer.failed")
+  except OSError:
     # Update notification
-    n.update("Screenshot uploaded!", base_url + name + '.png')
-    n.set_category("transfer.complete")
-    # Copy link to the clipboard
-    pyperclip.copy(base_url + name + ".png")
-  else:
     n.update("Error uploading")
     n.set_category("transfer.failed")
-except OSError:
-  # Update notification
-  n.update("Error uploading")
-  n.set_category("transfer.failed")
   pass
-n.show()
+  n.show()
