@@ -1,7 +1,7 @@
 #
 # TheBITLINK's zsh theme.
 #
-# Based on my own .bashrc (https://gist.github.com/TheBITLINK/0c4021ea5a82835afa3750c0e0ef293b)
+# Based on my own .bashrc (https://github.com/TheBITLINK/dotfiles/blob/master/.bashrc)
 #
 # # README
 #
