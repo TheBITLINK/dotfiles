@@ -12,8 +12,6 @@ case ${SOLARIZED_THEME:-dark} in
     *)     fgc=white;;
 esac
 
-local w="%{$reset_color%}"
-
 precmd() {
   export TBL_ZSH_JST=''
   [[ $(jobs -l | wc -l) -gt 0 ]] && export TBL_ZSH_JST=' ⚙'
@@ -27,10 +25,10 @@ else
   _USERCOLOR="%{$fg[green]%}"
 fi
 
-PROMPT=$' ${(r:$(($COLUMNS - 8))::\u2500:)} %D{%H:%M}\n${w}[${_USERCOLOR}%n${w}@%m %{$fg[cyan]%}%c$(git_prompt_info)${w}]%(!.#.$) '
+PROMPT=$' ${(r:$(($COLUMNS - 8))::\u2500:)} %D{%H:%M}\n%{$reset_color%}[${_USERCOLOR}%n%{$reset_color%}@%m %{$fg[cyan]%}%c$(git_prompt_info)%{$reset_color%}]%(!.#.$) '
 RPROMPT='%{$fg_bold[magenta]%}%(?.. [%?])%{$fg_bold[cyan]%}${TBL_ZSH_JST}%{$reset_color%}'
 
 ZSH_THEME_GIT_PROMPT_PREFIX=" %{$fg[blue]%}"
-ZSH_THEME_GIT_PROMPT_SUFFIX="${w}"
+ZSH_THEME_GIT_PROMPT_SUFFIX="%{$reset_color%}"
 ZSH_THEME_GIT_PROMPT_DIRTY="%{$fg_bold[yellow]%}"
 ZSH_THEME_GIT_PROMPT_CLEAN=""
